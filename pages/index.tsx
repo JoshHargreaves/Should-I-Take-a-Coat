@@ -3,7 +3,7 @@ import Head from "next/head";
 import Layout from '../components/layout/layout';
 import Weather from "../components/weather/weather";
 
-export default function Home({results}): JSX.Element {
+export default function Home({results} : any): JSX.Element {
   return (
     <>
       <Head>
