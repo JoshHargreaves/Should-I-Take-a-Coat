@@ -1,8 +1,9 @@
 import React from "react";
 import Head from "next/head";
 import Layout from '../components/layout/layout';
+import Weather from "../components/weather/weather";
 
-export default function Home() {
+export default function Home({results}): JSX.Element {
   return (
     <>
       <Head>
@@ -13,13 +14,24 @@ export default function Home() {
       </Head>
       <Layout>
         <div className="min-h-screen  flex flex-row items-center justify-center">
-          <div className="border-4 border-solid border-gray-900 rounded-lg p-20">
-          <h1 className="text-5xl text-slate-50 font-bold ">
-            I would grab a coat today !
-          </h1>
-          </div>
+        <Weather results={results}></Weather>
         </div>
       </Layout>
     </>
   );
+}
+
+
+export async function getServerSideProps() {
+
+  var latitude = 51.5;
+  var longitude = -0.13;
+
+  const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,precipitation&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&windspeed_unit=mph&timeformat=unixtime&timezone=auto`);
+  const data = await res.json();
+  return {
+      props: {
+          results: data
+      }
+  }
 }
